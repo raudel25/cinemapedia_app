@@ -1,7 +1,5 @@
-import 'package:cinemapedia_app/presentation/providers/movies/movie_providers.dart';
 import 'package:cinemapedia_app/presentation/providers/providers.dart';
-import 'package:cinemapedia_app/presentation/widgets/movies/movie_slide_show.dart';
-import 'package:cinemapedia_app/presentation/widgets/shared/custom_app_bar.dart';
+import 'package:cinemapedia_app/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,14 +22,26 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final moviesSlideShow = ref.watch(moviesSlideshowProvider);
 
-    return Column(
-      children: [
-        const CustomAppBar(),
-        MovieSlideShow(movies: moviesSlideShow),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const CustomAppBar(),
+          MovieSlideShow(movies: moviesSlideShow),
+          MovieHorizontalListView(
+            movies: nowPlayingMovies,
+            loadNextPage: () =>
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          ),
+          MovieHorizontalListView(
+            movies: nowPlayingMovies,
+            loadNextPage: () =>
+                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+          )
+        ],
+      ),
     );
   }
 }

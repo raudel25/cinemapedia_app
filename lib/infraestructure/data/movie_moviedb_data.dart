@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 
 import 'package:cinemapedia_app/domain/data/movie_data.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
-import 'package:cinemapedia_app/utils/data_response.dart';
+import 'package:cinemapedia_app/config/utils/data_response.dart';
 
 class MovieMovieDbData extends MovieData {
   final dio = Dio(BaseOptions(
