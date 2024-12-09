@@ -38,6 +38,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   dio: ^5.7.0
   flutter_riverpod: ^2.6.1
+  easy_localization: ^3.0.7
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +63,8 @@ flutter:
 
   assets:
     - .env
-    
+    - assets/translations/
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

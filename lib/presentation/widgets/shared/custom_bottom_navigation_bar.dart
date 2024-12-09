@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
@@ -5,12 +6,13 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(items: const [
-      BottomNavigationBarItem(icon: Icon(Icons.home_max), label: 'Home'),
+    return BottomNavigationBar(elevation: 0, items: [
       BottomNavigationBarItem(
-          icon: Icon(Icons.label_outline), label: 'Categories'),
+          icon: const Icon(Icons.home_max), label: 'home'.tr()),
       BottomNavigationBarItem(
-          icon: Icon(Icons.favorite_outline), label: 'Favorites')
+          icon: const Icon(Icons.label_outline), label: 'categories'.tr()),
+      BottomNavigationBarItem(
+          icon: const Icon(Icons.favorite_outline), label: 'favorites'.tr())
     ]);
   }
 }
