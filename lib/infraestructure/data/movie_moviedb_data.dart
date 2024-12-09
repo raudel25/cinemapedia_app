@@ -13,10 +13,15 @@ class MovieMovieDbData extends MovieData {
       queryParameters: {'api_key': Environment.theMovieDbKey}));
 
   @override
-  Future<DataResponse<List<Movie>>> getNowPlaying({int page = 1}) async {
+  Future<DataResponse<List<Movie>>> getNowPlaying(
+      {int page = 1, String? language}) async {
+    Map<String, dynamic> query = {'page': page};
+
+    if (language != null) query['language'] = language.replaceAll(r'_', '-');
+
     try {
       final response =
-          await dio.get('/movie/now_playing', queryParameters: {'page': page});
+          await dio.get('/movie/now_playing', queryParameters: query);
 
       final movies = MovieMovieDbResponse.fromJson(response.data)
           .results

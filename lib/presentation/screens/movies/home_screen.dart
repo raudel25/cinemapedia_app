@@ -25,23 +25,36 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
     final moviesSlideShow = ref.watch(moviesSlideshowProvider);
 
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const CustomAppBar(),
-          MovieSlideShow(movies: moviesSlideShow),
-          MovieHorizontalListView(
-            movies: nowPlayingMovies,
-            loadNextPage: () =>
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            title: CustomAppBar(),
+            titlePadding: EdgeInsets.zero,
           ),
-          MovieHorizontalListView(
-            movies: nowPlayingMovies,
-            loadNextPage: () =>
-                ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-          )
-        ],
-      ),
+        ),
+        SliverList(
+            delegate: SliverChildBuilderDelegate(
+                childCount: 1,
+                (context, index) => Column(
+                      children: [
+                        MovieSlideShow(movies: moviesSlideShow),
+                        MovieHorizontalListView(
+                          movies: nowPlayingMovies,
+                          loadNextPage: () => ref
+                              .read(nowPlayingMoviesProvider.notifier)
+                              .loadNextPage(),
+                        ),
+                        MovieHorizontalListView(
+                          movies: nowPlayingMovies,
+                          loadNextPage: () => ref
+                              .read(nowPlayingMoviesProvider.notifier)
+                              .loadNextPage(),
+                        )
+                      ],
+                    )))
+      ],
     );
   }
 }
