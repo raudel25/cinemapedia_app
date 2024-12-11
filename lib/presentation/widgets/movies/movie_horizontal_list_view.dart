@@ -48,24 +48,24 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 350,
-        child: Column(
-          children: [
-            if (widget.title != null || widget.subTitle != null)
-              _Header(title: widget.title, subTitle: widget.subTitle)
-            else
-              const SizedBox(height: 10),
-            Expanded(
-                child: ListView.builder(
-              controller: scrollController,
-              itemBuilder: (context, index) =>
-                  _Slide(movie: widget.movies[index]),
-              itemCount: widget.movies.length,
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-            ))
-          ],
-        ));
+      height: 350,
+      child: Column(
+        children: [
+          if (widget.title != null || widget.subTitle != null)
+            _Header(title: widget.title, subTitle: widget.subTitle),
+          const SizedBox(height: 5),
+          Expanded(
+              child: ListView.builder(
+            controller: scrollController,
+            itemBuilder: (context, index) =>
+                FadeInRight(child: _Slide(movie: widget.movies[index])),
+            itemCount: widget.movies.length,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+          ))
+        ],
+      ),
+    );
   }
 }
 

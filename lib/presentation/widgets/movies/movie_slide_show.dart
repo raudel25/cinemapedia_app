@@ -2,7 +2,6 @@ import 'package:animate_do/animate_do.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class MovieSlideShow extends StatelessWidget {
   final List<Movie> movies;
@@ -36,7 +35,7 @@ class MovieSlideShow extends StatelessWidget {
 
 class _Movie extends StatelessWidget {
   final Movie movie;
-  const _Movie({super.key, required this.movie});
+  const _Movie({required this.movie});
 
   @override
   Widget build(BuildContext context) {

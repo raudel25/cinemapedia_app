@@ -12,6 +12,13 @@ class MovieMovieDbData extends MovieData {
       baseUrl: Environment.theMovieDbBaseUrl,
       queryParameters: {'api_key': Environment.theMovieDbKey}));
 
+  List<Movie> _parseJson(Map<String, dynamic> json) =>
+      MovieMovieDbResponse.fromJson(json)
+          .results
+          .where((e) => e.posterPath != '-')
+          .map((e) => MovieMapper.movieDbToEntity(e))
+          .toList();
+
   @override
   Future<DataResponse<List<Movie>>> getNowPlaying(
       {int page = 1, String? language}) async {
@@ -23,13 +30,56 @@ class MovieMovieDbData extends MovieData {
       final response =
           await dio.get('/movie/now_playing', queryParameters: query);
 
-      final movies = MovieMovieDbResponse.fromJson(response.data)
-          .results
-          .where((e) => e.posterPath != '-')
-          .map((e) => MovieMapper.movieDbToEntity(e))
-          .toList();
+      return DataResponse(success: true, data: _parseJson(response.data));
+    } catch (_) {
+      return DataResponse(success: false);
+    }
+  }
 
-      return DataResponse(success: true, data: movies);
+  @override
+  Future<DataResponse<List<Movie>>> getUpcoming(
+      {int page = 1, String? language}) async {
+    Map<String, dynamic> query = {'page': page};
+
+    if (language != null) query['language'] = language.replaceAll(r'_', '-');
+
+    try {
+      final response = await dio.get('/movie/upcoming', queryParameters: query);
+
+      return DataResponse(success: true, data: _parseJson(response.data));
+    } catch (_) {
+      return DataResponse(success: false);
+    }
+  }
+
+  @override
+  Future<DataResponse<List<Movie>>> getPopular(
+      {int page = 1, String? language}) async {
+    Map<String, dynamic> query = {'page': page};
+
+    if (language != null) query['language'] = language.replaceAll(r'_', '-');
+
+    try {
+      final response = await dio.get('/movie/popular', queryParameters: query);
+
+      return DataResponse(success: true, data: _parseJson(response.data));
+    } catch (_) {
+      return DataResponse(success: false);
+    }
+  }
+
+  @override
+  Future<DataResponse<List<Movie>>> getTopRated(
+      {int page = 1, String? language}) async {
+    Map<String, dynamic> query = {'page': page};
+
+    if (language != null) query['language'] = language.replaceAll(r'_', '-');
+
+    try {
+      final response =
+          await dio.get('/movie/top_rated', queryParameters: query);
+
+      return DataResponse(success: true, data: _parseJson(response.data));
     } catch (_) {
       return DataResponse(success: false);
     }

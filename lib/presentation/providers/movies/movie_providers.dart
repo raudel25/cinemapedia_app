@@ -21,6 +21,57 @@ final nowPlayingMoviesProvider =
   return notifier;
 });
 
+final popularMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  final locale = ref.read(localeProvider.notifier).state;
+
+  load({int page = 1}) => ref
+      .watch(movieRepositoryProvider)
+      .getPopular(page: page, language: locale.toString());
+
+  final notifier = MoviesNotifier(load: load);
+
+  ref.listen(localeProvider, (previousLocale, newLocale) {
+    notifier.refresh();
+  });
+
+  return notifier;
+});
+
+final upcomingMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  final locale = ref.read(localeProvider.notifier).state;
+
+  load({int page = 1}) => ref
+      .watch(movieRepositoryProvider)
+      .getUpcoming(page: page, language: locale.toString());
+
+  final notifier = MoviesNotifier(load: load);
+
+  ref.listen(localeProvider, (previousLocale, newLocale) {
+    notifier.refresh();
+  });
+
+  return notifier;
+});
+
+final topRatedMoviesProvider =
+    StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
+  final locale = ref.read(localeProvider.notifier).state;
+
+  load({int page = 1}) => ref
+      .watch(movieRepositoryProvider)
+      .getTopRated(page: page, language: locale.toString());
+
+  final notifier = MoviesNotifier(load: load);
+
+  ref.listen(localeProvider, (previousLocale, newLocale) {
+    notifier.refresh();
+  });
+
+  return notifier;
+});
+
 class MoviesNotifier extends StateNotifier<List<Movie>> {
   int currentPage = 1;
   bool isLoading = false;

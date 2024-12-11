@@ -12,4 +12,19 @@ class MovieRepositoryImpl extends MovieRepository {
   Future<DataResponse<List<Movie>>> getNowPlaying(
           {int page = 1, String? language}) =>
       data.getNowPlaying(page: page, language: language);
+
+  @override
+  Future<DataResponse<List<Movie>>> getUpcoming(
+          {int page = 1, String? language}) =>
+      data.getUpcoming(page: page, language: language);
+
+  @override
+  Future<DataResponse<List<Movie>>> getPopular(
+          {int page = 1, String? language}) =>
+      data.getPopular(page: page, language: language);
+
+  @override
+  Future<DataResponse<List<Movie>>> getTopRated(
+          {int page = 1, String? language}) =>
+      data.getTopRated(page: page, language: language);
 }
