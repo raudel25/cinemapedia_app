@@ -3,6 +3,7 @@ import 'package:cinemapedia_app/config/utils/human_formats.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MovieHorizontalListView extends StatefulWidget {
   final List<Movie> movies;
@@ -100,7 +101,10 @@ class _Slide extends StatelessWidget {
                     );
                   }
 
-                  return FadeInRight(child: child);
+                  return FadeInRight(
+                      child: GestureDetector(
+                          onTap: () => context.push('/movie/${movie.id}'),
+                          child: child));
                 },
               ),
             ),

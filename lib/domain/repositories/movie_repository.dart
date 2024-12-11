@@ -13,4 +13,6 @@ abstract class MovieRepository {
 
   Future<DataResponse<List<Movie>>> getTopRated(
       {int page = 1, String? language});
+
+  Future<DataResponse<Movie>> getMovieById(String id, {String? language});
 }

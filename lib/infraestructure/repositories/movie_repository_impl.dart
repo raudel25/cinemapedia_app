@@ -27,4 +27,8 @@ class MovieRepositoryImpl extends MovieRepository {
   Future<DataResponse<List<Movie>>> getTopRated(
           {int page = 1, String? language}) =>
       data.getTopRated(page: page, language: language);
+
+  @override
+  Future<DataResponse<Movie>> getMovieById(String id, {String? language}) =>
+      data.getMovieById(id, language: language);
 }

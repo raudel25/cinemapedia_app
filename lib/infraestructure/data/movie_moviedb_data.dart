@@ -1,5 +1,6 @@
 import 'package:cinemapedia_app/config/constants/enviroment.dart';
 import 'package:cinemapedia_app/infraestructure/mappers/movie_mapper.dart';
+import 'package:cinemapedia_app/infraestructure/models/movie_moviedb_details.dart';
 import 'package:cinemapedia_app/infraestructure/models/movie_moviedb_response.dart';
 import 'package:dio/dio.dart';
 
@@ -80,6 +81,23 @@ class MovieMovieDbData extends MovieData {
           await dio.get('/movie/top_rated', queryParameters: query);
 
       return DataResponse(success: true, data: _parseJson(response.data));
+    } catch (_) {
+      return DataResponse(success: false);
+    }
+  }
+
+  @override
+  Future<DataResponse<Movie>> getMovieById(String id,
+      {String? language}) async {
+    Map<String, dynamic> query = {};
+
+    if (language != null) query['language'] = language.replaceAll(r'_', '-');
+    try {
+      final response = await dio.get('/movie/$id', queryParameters: query);
+
+      final movieDetails = MovieMovieDbDetails.fromJson(response.data);
+      final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
+      return DataResponse(success: true, data: movie);
     } catch (_) {
       return DataResponse(success: false);
     }
