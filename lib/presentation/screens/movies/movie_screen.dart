@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
 import 'package:cinemapedia_app/presentation/providers/providers.dart';
-import 'package:cinemapedia_app/presentation/widgets/shared/loading.dart';
+import 'package:cinemapedia_app/presentation/widgets/shared/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -27,23 +27,22 @@ class _MovieScreenState extends ConsumerState<MovieScreen> {
   Widget build(BuildContext context) {
     final movie = ref.watch(movieInfoProvider)[widget.movieId];
 
-    return Loading(
-      isLoading: movie == null,
-      child: Scaffold(
-        body: movie == null
-            ? null
-            : CustomScrollView(
-                slivers: [
-                  _CustomSliverAppBar(movie: movie),
-                  SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                          (context, index) => _MovieDetails(movie: movie),
-                          childCount: 1))
-                ],
-                physics: const ClampingScrollPhysics(),
-              ),
-      ),
-    );
+    return Loader(
+        isLoading: movie == null,
+        child: Scaffold(
+          body: movie == null
+              ? null
+              : CustomScrollView(
+                  slivers: [
+                    _CustomSliverAppBar(movie: movie),
+                    SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                            (context, index) => _MovieDetails(movie: movie),
+                            childCount: 1))
+                  ],
+                  physics: const ClampingScrollPhysics(),
+                ),
+        ));
   }
 }
 
