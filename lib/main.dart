@@ -1,6 +1,7 @@
 import 'package:cinemapedia_app/config/languages/languages.dart';
 import 'package:cinemapedia_app/config/router/app_router.dart';
 import 'package:cinemapedia_app/config/theme/app_theme.dart';
+import 'package:cinemapedia_app/config/utils/snack_bar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      scaffoldMessengerKey: globalSnackBar.messengerKey,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       localizationsDelegates: context.localizationDelegates,

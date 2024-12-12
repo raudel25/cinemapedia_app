@@ -1,4 +1,5 @@
 import 'package:cinemapedia_app/config/utils/data_response.dart';
+import 'package:cinemapedia_app/config/utils/snack_bar.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
 import 'package:cinemapedia_app/presentation/providers/locale/locale_provider.dart';
 import 'package:cinemapedia_app/presentation/providers/movies/movie_repository_provider.dart';
@@ -24,7 +25,10 @@ class MovieMapNotifier extends StateNotifier<Map<String, Movie>> {
   Future<void> loadMovie(String movieId) async {
     if (state[movieId] != null) return;
     final response = await getMovie(movieId);
-    if (!response.success) return;
+    if (!response.success) {
+      globalSnackBar.showSnackBarResponse(response);
+      return;
+    }
 
     state = {...state, movieId: response.data!};
   }

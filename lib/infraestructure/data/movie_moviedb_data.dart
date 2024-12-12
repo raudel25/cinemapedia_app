@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:cinemapedia_app/domain/data/movie_data.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
 import 'package:cinemapedia_app/config/utils/data_response.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MovieMovieDbData extends MovieData {
   final dio = Dio(BaseOptions(
@@ -95,9 +96,30 @@ class MovieMovieDbData extends MovieData {
     try {
       final response = await dio.get('/movie/$id', queryParameters: query);
 
+      if (response.statusCode == 404) {
+        return DataResponse(success: false, message: 'notFoundMovie'.tr());
+      }
+
       final movieDetails = MovieMovieDbDetails.fromJson(response.data);
       final Movie movie = MovieMapper.movieDetailsToEntity(movieDetails);
       return DataResponse(success: true, data: movie);
+    } catch (_) {
+      return DataResponse(success: false);
+    }
+  }
+
+  @override
+  Future<DataResponse<List<Movie>>> searchMovie(String query,
+      {String? language}) async {
+    Map<String, dynamic> queryApi = {'query': query};
+
+    if (language != null) queryApi['language'] = language.replaceAll(r'_', '-');
+
+    try {
+      final response =
+          await dio.get('/search/movie', queryParameters: queryApi);
+
+      return DataResponse(success: true, data: _parseJson(response.data));
     } catch (_) {
       return DataResponse(success: false);
     }

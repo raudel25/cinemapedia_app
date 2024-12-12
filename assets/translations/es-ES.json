@@ -6,5 +6,8 @@
     "popular": "Popular",
     "upcoming": "Próximamente",
     "topRated": "Mejor valoradas",
-    "loading": "Cargando..."
+    "loading": "Cargando...",
+    "unexpectedError": "Ups..., ha ocurrido un error inesperado",
+    "notFoundMovie": "Película no encontrada",
+    "searchMovie": "Buscar película"
 }
