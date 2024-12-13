@@ -6,13 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final nowPlayingMoviesProvider =
     StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final locale = ref.read(localeProvider.notifier).state;
-
-  load({int page = 1}) => ref
-      .watch(movieRepositoryProvider)
-      .getNowPlaying(page: page, language: locale.toString());
-
-  final notifier = MoviesNotifier(load: load);
+  final notifier = MoviesNotifier(
+      ref: ref, load: ref.watch(movieRepositoryProvider).getNowPlaying);
 
   ref.listen(localeProvider, (previousLocale, newLocale) {
     notifier.refresh();
@@ -23,13 +18,8 @@ final nowPlayingMoviesProvider =
 
 final popularMoviesProvider =
     StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final locale = ref.read(localeProvider.notifier).state;
-
-  load({int page = 1}) => ref
-      .watch(movieRepositoryProvider)
-      .getPopular(page: page, language: locale.toString());
-
-  final notifier = MoviesNotifier(load: load);
+  final notifier = MoviesNotifier(
+      ref: ref, load: ref.watch(movieRepositoryProvider).getPopular);
 
   ref.listen(localeProvider, (previousLocale, newLocale) {
     notifier.refresh();
@@ -40,13 +30,8 @@ final popularMoviesProvider =
 
 final upcomingMoviesProvider =
     StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final locale = ref.read(localeProvider.notifier).state;
-
-  load({int page = 1}) => ref
-      .watch(movieRepositoryProvider)
-      .getUpcoming(page: page, language: locale.toString());
-
-  final notifier = MoviesNotifier(load: load);
+  final notifier = MoviesNotifier(
+      ref: ref, load: ref.watch(movieRepositoryProvider).getUpcoming);
 
   ref.listen(localeProvider, (previousLocale, newLocale) {
     notifier.refresh();
@@ -57,13 +42,8 @@ final upcomingMoviesProvider =
 
 final topRatedMoviesProvider =
     StateNotifierProvider<MoviesNotifier, List<Movie>>((ref) {
-  final locale = ref.read(localeProvider.notifier).state;
-
-  load({int page = 1}) => ref
-      .watch(movieRepositoryProvider)
-      .getTopRated(page: page, language: locale.toString());
-
-  final notifier = MoviesNotifier(load: load);
+  final notifier = MoviesNotifier(
+      ref: ref, load: ref.watch(movieRepositoryProvider).getTopRated);
 
   ref.listen(localeProvider, (previousLocale, newLocale) {
     notifier.refresh();
@@ -73,26 +53,27 @@ final topRatedMoviesProvider =
 });
 
 class MoviesNotifier extends StateNotifier<List<Movie>> {
-  int currentPage = 1;
+  int currentPage = 0;
   bool isLoading = false;
-  final Future<DataResponse<List<Movie>>> Function({int page}) load;
+  final Ref ref;
+  final Future<DataResponse<List<Movie>>> Function({int page, String? language})
+      load;
 
-  MoviesNotifier({required this.load}) : super(<Movie>[]);
+  MoviesNotifier({required this.load, required this.ref}) : super(<Movie>[]);
 
-  Future<void> refresh() async {
-    currentPage = 0;
-    state = [];
-    await loadNextPage();
-  }
+  void refresh() => loadNextPage(refresh: true);
 
-  Future<void> loadNextPage() async {
+  Future<void> loadNextPage({bool refresh = false}) async {
     if (isLoading) return;
     isLoading = true;
 
+    if (refresh) currentPage = 0;
+
     currentPage++;
     final response = await load(
-      page: currentPage,
-    );
+        page: currentPage, language: ref.read(localeProvider).toString());
+
+    if (refresh) state = [];
 
     if (response.success) {
       state = [...state, ...response.data!];

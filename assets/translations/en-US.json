@@ -1,3 +1,13 @@
 {
-    "home": "Home"
+    "home": "Home",
+    "categories": "Categories",
+    "favorites": "Favorites",
+    "inMovieTheaters": "In theaters",
+    "popular": "Popular",
+    "upcoming": "Coming soon",
+    "topRated": "Top rated",
+    "loading": "Loading...",
+    "unexpectedError": "Oops..., an unexpected error has occurred",
+    "notFoundMovie": "Movie not found",
+    "searchMovie": "Search for movie"
 }

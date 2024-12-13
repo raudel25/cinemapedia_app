@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final searchResultMoviesProvider =
     StateNotifierProvider<SearchedMoviesNotifier, List<Movie>>((ref) {
-  final locale = ref.read(localeProvider.notifier).state;
+  final locale = ref.read(localeProvider.notifier);
 
   final movieRepository = ref.read(movieRepositoryProvider);
 

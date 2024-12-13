@@ -8,26 +8,32 @@ final actorsByMovieProvider =
         (ref) {
   final actorsRepository = ref.watch(actorRepositoryProvider);
 
-  final locale = ref.read(localeProvider.notifier).state;
-
   return ActorsByMovieNotifier(
-      getActors: (String movieId) => actorsRepository.getActorsByMovie(movieId,
-          language: locale.toString()));
+      getActors: actorsRepository.getActorsByMovie, ref: ref);
 });
 
 class ActorsByMovieNotifier extends StateNotifier<Map<String, List<Actor>>> {
-  final Future<DataResponse<List<Actor>>> Function(String movieId) getActors;
+  final Future<DataResponse<List<Actor>>> Function(String movieId,
+      {String? language}) getActors;
+  final Ref ref;
 
-  ActorsByMovieNotifier({
-    required this.getActors,
-  }) : super({});
+  final Map<(String, String), List<Actor>> _localeState = {};
+
+  ActorsByMovieNotifier({required this.getActors, required this.ref})
+      : super({});
 
   Future<void> loadActors(String movieId) async {
-    if (state[movieId] != null) return;
+    final locale = ref.read(localeProvider).toString();
 
-    final response = await getActors(movieId);
+    if (_localeState[(movieId, locale)] != null) {
+      state = {...state, movieId: _localeState[(movieId, locale)]!};
+      return;
+    }
+
+    final response = await getActors(movieId, language: locale);
     if (!response.success) return;
 
     state = {...state, movieId: response.data!};
+    _localeState[(movieId, locale)] = response.data!;
   }
 }
