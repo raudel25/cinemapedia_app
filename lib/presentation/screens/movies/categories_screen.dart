@@ -6,6 +6,23 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return CustomScrollView(
+      slivers: [
+        const SliverAppBar(
+          automaticallyImplyLeading: false,
+          floating: true,
+          flexibleSpace: FlexibleSpaceBar(
+            // title: CustomAppBar(),
+            titlePadding: EdgeInsets.zero,
+          ),
+        ),
+        SliverList(
+            delegate: SliverChildBuilderDelegate(
+                childCount: 1,
+                (context, index) => Column(
+                      children: [],
+                    )))
+      ],
+    );
   }
 }

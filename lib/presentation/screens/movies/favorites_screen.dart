@@ -1,6 +1,9 @@
 import 'package:cinemapedia_app/presentation/providers/providers.dart';
+import 'package:cinemapedia_app/presentation/widgets/movies/movie_mazonry.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class FavoritesScreen extends ConsumerStatefulWidget {
   static const name = 'favorites-screen';
@@ -32,10 +35,32 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
   Widget build(BuildContext context) {
     final movies = ref.watch(movieFavoritesProvider).values.toList();
 
-    return ListView.builder(
-        itemCount: movies.length,
-        itemBuilder: (context, index) {
-          return ListTile(title: Text(movies[index].title));
-        });
+    if (movies.isEmpty) {
+      final colors = Theme.of(context).colorScheme;
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(Icons.favorite_outline_sharp, size: 60, color: colors.primary),
+            Text('Ohhh no!!',
+                style: TextStyle(fontSize: 30, color: colors.primary)),
+            Text('doNotHaveFavoriteMovies'.tr(),
+                style: const TextStyle(
+                  fontSize: 20,
+                )),
+            const SizedBox(height: 20),
+            FilledButton.tonal(
+                onPressed: () => context.push('/home/0'),
+                child: Text('startSearch'.tr()))
+          ],
+        ),
+      );
+    }
+
+    return MovieMasonry(
+        movies: movies,
+        loadNextPage: () =>
+            ref.read(movieFavoritesProvider.notifier).loadNextPage());
   }
 }

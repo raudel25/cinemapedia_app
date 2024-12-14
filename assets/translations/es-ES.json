@@ -9,5 +9,7 @@
     "loading": "Cargando...",
     "unexpectedError": "Ups..., ha ocurrido un error inesperado",
     "notFoundMovie": "Película no encontrada",
-    "searchMovie": "Buscar película"
+    "searchMovie": "Buscar película",
+    "doNotHaveFavoriteMovies": "No tienes películas favoritas",
+    "startSearch": "Empieza a buscar"
 }

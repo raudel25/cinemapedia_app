@@ -14,14 +14,19 @@ final movieFavoritesProvider =
 });
 
 class MovieFavoritesNotifier extends StateNotifier<Map<int, Movie>> {
-  int page = 0;
+  int currentPage = 0;
+  bool isLoading = false;
   final LocalRepository localRepository;
 
   MovieFavoritesNotifier({required this.localRepository}) : super({});
 
-  Future<List<Movie>> loadNextPage() async {
-    page++;
-    final movies = await localRepository.loadMovies(page: page, size: 20);
+  Future<void> loadNextPage() async {
+    if (isLoading) return;
+    isLoading = true;
+
+    currentPage++;
+    final movies =
+        await localRepository.loadMovies(page: currentPage, size: 20);
 
     final tempMoviesMap = <int, Movie>{};
     for (final movie in movies) {
@@ -30,7 +35,7 @@ class MovieFavoritesNotifier extends StateNotifier<Map<int, Movie>> {
 
     state = {...state, ...tempMoviesMap};
 
-    return movies;
+    isLoading = false;
   }
 
   Future<void> toggleFavorite(Movie movie) async {
