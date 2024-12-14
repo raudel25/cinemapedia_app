@@ -50,7 +50,7 @@ class CustomAppBar extends ConsumerWidget {
                     onPressed: () => ref
                         .read(themeProvider.notifier)
                         .updateIsDarkMode(!isDarkMode),
-                    icon: isDarkMode
+                    icon: !isDarkMode
                         ? const Icon(Icons.dark_mode_rounded)
                         : const Icon(Icons.light_mode_rounded)),
                 IconButton(

@@ -25,16 +25,17 @@ class _LayoutScreenState extends State<LayoutScreen> {
         }),
       ),
       const CategoriesScreen(),
-      const FavoritesScreen()
+      FavoritesScreen(
+        setLoading: (value) => setState(() {
+          isLoading = value;
+        }),
+      )
     ];
 
     return Loader(
         isLoading: isLoading,
         child: Scaffold(
-          body: IndexedStack(
-            index: widget.page,
-            children: screens,
-          ),
+          body: screens[widget.page],
           bottomNavigationBar: CustomBottomNavigationBar(
             index: widget.page,
           ),
