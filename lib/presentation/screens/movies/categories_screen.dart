@@ -9,8 +9,10 @@ class CategoriesScreen extends ConsumerStatefulWidget {
   static const name = 'categories-screen';
 
   final Function(bool value) setLoading;
+  final String? categoryName;
 
-  const CategoriesScreen({super.key, required this.setLoading});
+  const CategoriesScreen(
+      {super.key, required this.setLoading, required this.categoryName});
 
   @override
   ConsumerState<CategoriesScreen> createState() => _CategoriesScreenState();
@@ -29,7 +31,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
   }
 
   void load() async {
-    final categories = ref.watch(categoryProvider);
+    var categories = ref.watch(categoryProvider);
 
     widget.setLoading(true);
 
@@ -37,7 +39,10 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
       await ref.read(categoryProvider.notifier).loadCategories();
     }
 
-    await setCategory(ref.watch(categoryProvider).first.id);
+    categories = ref.watch(categoryProvider);
+    await setCategory(widget.categoryName == null
+        ? categories.first.id
+        : categories.firstWhere((e) => e.name == widget.categoryName).id);
 
     widget.setLoading(false);
   }

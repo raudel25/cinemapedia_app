@@ -5,8 +5,10 @@ final appRouter = GoRouter(initialLocation: '/home/0', routes: [
   GoRoute(
       path: '/home/:page',
       name: LayoutScreen.name,
-      builder: (context, state) =>
-          LayoutScreen(page: int.parse(state.pathParameters['page'] ?? '0')),
+      builder: (context, state) => LayoutScreen(
+            page: int.parse(state.pathParameters['page'] ?? '0'),
+            param: state.extra,
+          ),
       routes: [
         GoRoute(
             path: 'movie/:id',

@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 
 class FavoritesScreen extends ConsumerStatefulWidget {
   static const name = 'favorites-screen';
-  
+
   final Function(bool value) setLoading;
 
   const FavoritesScreen({super.key, required this.setLoading});

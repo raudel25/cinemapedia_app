@@ -6,8 +6,9 @@ class LayoutScreen extends StatefulWidget {
   static const name = 'layout-screen';
 
   final int page;
+  final Object? param;
 
-  const LayoutScreen({super.key, required this.page});
+  const LayoutScreen({super.key, required this.page, required this.param});
 
   @override
   State<LayoutScreen> createState() => _LayoutScreenState();
@@ -25,6 +26,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
         }),
       ),
       CategoriesScreen(
+        categoryName: widget.param as String?,
         setLoading: (value) => setState(() {
           isLoading = value;
         }),
