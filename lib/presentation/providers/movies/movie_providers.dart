@@ -52,7 +52,8 @@ final topRatedMoviesProvider =
   return notifier;
 });
 
-final moviesByCategoryProvider =
+final StateNotifierProviderFamily<MoviesNotifier, List<Movie>, int>
+    moviesByCategoryProvider =
     StateNotifierProvider.family((ref, int categoryId) {
   final notifier = MoviesNotifier(
       ref: ref,
@@ -61,6 +62,12 @@ final moviesByCategoryProvider =
           .getMoviesByCategory(categoryId, page: page, language: language));
 
   return notifier;
+});
+
+final similarMoviesProvider = FutureProvider.family((ref, int movieId) {
+  final movieRepository = ref.watch(movieRepositoryProvider);
+  return movieRepository.getSimilarMovies(movieId,
+      language: ref.read(localeProvider).toString());
 });
 
 class MoviesNotifier extends StateNotifier<List<Movie>> {

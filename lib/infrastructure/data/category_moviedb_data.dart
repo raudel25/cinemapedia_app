@@ -1,9 +1,9 @@
-import 'package:cinemapedia_app/config/constants/enviroment.dart';
+import 'package:cinemapedia_app/config/constants/environment.dart';
 import 'package:cinemapedia_app/config/utils/data_response.dart';
 import 'package:cinemapedia_app/domain/data/category_data.dart';
 import 'package:cinemapedia_app/domain/entities/category.dart';
-import 'package:cinemapedia_app/infraestructure/mappers/category_mapper.dart';
-import 'package:cinemapedia_app/infraestructure/models/category_response.dart';
+import 'package:cinemapedia_app/infrastructure/mappers/category_mapper.dart';
+import 'package:cinemapedia_app/infrastructure/models/category_response.dart';
 import 'package:dio/dio.dart';
 
 class CategoryMovieDbData extends CategoryData {

@@ -23,7 +23,7 @@ class AppLanguage {
 
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
-    final locale = await prefs.getString('locale');
+    final locale = prefs.getString('locale');
 
     this.locale = locale == null
         ? _systemLocale()

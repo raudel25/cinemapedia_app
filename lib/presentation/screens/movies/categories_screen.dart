@@ -31,7 +31,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
   }
 
   void load() async {
-    var categories = ref.watch(categoryProvider);
+    var categories = ref.read(categoryProvider);
 
     widget.setLoading(true);
 
@@ -39,7 +39,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
       await ref.read(categoryProvider.notifier).loadCategories();
     }
 
-    categories = ref.watch(categoryProvider);
+    categories = ref.read(categoryProvider);
     await setCategory(widget.categoryName == null
         ? categories.first.id
         : categories.firstWhere((e) => e.name == widget.categoryName).id);
@@ -51,8 +51,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
     setState(() {
       selectedCategory = id;
     });
-    final movies =
-        ref.watch(moviesByCategoryProvider(selectedCategory!)) as List<Movie>;
+    final movies = ref.watch(moviesByCategoryProvider(selectedCategory!));
 
     if (movies.isNotEmpty) return;
 
@@ -63,7 +62,7 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
   Widget build(BuildContext context) {
     final categories = ref.watch(categoryProvider);
     final movies = selectedCategory != null
-        ? ref.watch(moviesByCategoryProvider(selectedCategory!)) as List<Movie>
+        ? ref.watch(moviesByCategoryProvider(selectedCategory!))
         : <Movie>[];
 
     return Column(

@@ -1,5 +1,6 @@
 import 'package:cinemapedia_app/domain/data/movie_data.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
+import 'package:cinemapedia_app/domain/entities/video.dart';
 import 'package:cinemapedia_app/domain/repositories/movie_repository.dart';
 import 'package:cinemapedia_app/config/utils/data_response.dart';
 
@@ -41,4 +42,14 @@ class MovieRepositoryImpl extends MovieRepository {
   Future<DataResponse<List<Movie>>> getMoviesByCategory(int categoryId,
           {int page = 1, String? language}) =>
       data.getMoviesByCategory(categoryId, language: language, page: page);
+
+  @override
+  Future<DataResponse<List<Movie>>> getSimilarMovies(int movieId,
+          {String? language}) =>
+      data.getSimilarMovies(movieId, language: language);
+
+  @override
+  Future<DataResponse<List<Video>>> getYouTubeVideosById(int movieId,
+          {String? language}) =>
+      data.getYouTubeVideosById(movieId, language: language);
 }

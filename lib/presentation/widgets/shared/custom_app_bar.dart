@@ -1,8 +1,7 @@
 import 'package:cinemapedia_app/config/language/app_language.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
-import 'package:cinemapedia_app/presentation/deleagtes/search_movie_delegate.dart';
+import 'package:cinemapedia_app/presentation/delegates/search_movie_delegate.dart';
 import 'package:cinemapedia_app/presentation/providers/providers.dart';
-import 'package:cinemapedia_app/presentation/providers/theme/theme_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

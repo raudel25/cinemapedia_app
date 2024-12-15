@@ -18,7 +18,7 @@ class AppTheme {
 
   Future<void> load() async {
     final prefs = await SharedPreferences.getInstance();
-    final isDarkMode = await prefs.getBool('isDarkMode');
+    final isDarkMode = prefs.getBool('isDarkMode');
 
     this.isDarkMode = isDarkMode ?? ThemeMode.system == ThemeMode.dark;
   }

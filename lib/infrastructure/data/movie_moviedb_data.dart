@@ -1,7 +1,10 @@
-import 'package:cinemapedia_app/config/constants/enviroment.dart';
-import 'package:cinemapedia_app/infraestructure/mappers/movie_mapper.dart';
-import 'package:cinemapedia_app/infraestructure/models/movie_moviedb_details.dart';
-import 'package:cinemapedia_app/infraestructure/models/movie_moviedb_response.dart';
+import 'package:cinemapedia_app/config/constants/environment.dart';
+import 'package:cinemapedia_app/domain/entities/video.dart';
+import 'package:cinemapedia_app/infrastructure/mappers/movie_mapper.dart';
+import 'package:cinemapedia_app/infrastructure/mappers/video_mapper.dart';
+import 'package:cinemapedia_app/infrastructure/models/movie_moviedb_details.dart';
+import 'package:cinemapedia_app/infrastructure/models/movie_moviedb_response.dart';
+import 'package:cinemapedia_app/infrastructure/models/video_moviedb.dart';
 import 'package:dio/dio.dart';
 
 import 'package:cinemapedia_app/domain/data/movie_data.dart';
@@ -136,6 +139,45 @@ class MovieMovieDbData extends MovieData {
       final response = await dio.get('/discover/movie', queryParameters: query);
 
       return DataResponse(success: true, data: _parseJson(response.data));
+    } catch (_) {
+      return DataResponse(success: false);
+    }
+  }
+
+  @override
+  Future<DataResponse<List<Movie>>> getSimilarMovies(int movieId,
+      {String? language}) async {
+    Map<String, dynamic> queryApi = {};
+
+    if (language != null) queryApi['language'] = language.replaceAll(r'_', '-');
+
+    try {
+      final response =
+          await dio.get('/movie/$movieId/similar', queryParameters: queryApi);
+
+      return DataResponse(success: true, data: _parseJson(response.data));
+    } catch (_) {
+      return DataResponse(success: false);
+    }
+  }
+
+  @override
+  Future<DataResponse<List<Video>>> getYouTubeVideosById(int movieId,
+      {String? language}) async {
+    Map<String, dynamic> queryApi = {};
+
+    if (language != null) queryApi['language'] = language.replaceAll(r'_', '-');
+
+    try {
+      final response = await dio.get('/movie/$movieId/videos');
+
+      return DataResponse(
+          success: true,
+          data: MovieDbVideosResponse.fromJson(response.data)
+              .results
+              .where((e) => e.site == 'YouTube')
+              .map((e) => VideoMapper.movieDbVideoToEntity(e))
+              .toList());
     } catch (_) {
       return DataResponse(success: false);
     }

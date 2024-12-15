@@ -1,10 +1,10 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
 import 'package:cinemapedia_app/presentation/providers/providers.dart';
+import 'package:cinemapedia_app/presentation/widgets/movies/similar_movies.dart';
 import 'package:cinemapedia_app/presentation/widgets/shared/loader.dart';
+import 'package:cinemapedia_app/presentation/widgets/videos/videos_from_movie.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -227,6 +227,8 @@ class _MovieDetails extends StatelessWidget {
           ),
         ),
         _ActorsByMovie(movieId: movie.id.toString()),
+        VideosFromMovie(movieId: movie.id),
+        SimilarMovies(movieId: movie.id),
         const SizedBox(height: 50),
       ],
     );

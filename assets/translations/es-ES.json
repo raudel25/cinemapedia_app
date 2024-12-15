@@ -11,5 +11,7 @@
     "notFoundMovie": "Película no encontrada",
     "searchMovie": "Buscar película",
     "doNotHaveFavoriteMovies": "No tienes películas favoritas",
-    "startSearch": "Empieza a buscar"
+    "startSearch": "Empieza a buscar",
+    "suggestions": "Recomendaciones",
+    "videos": "Videos"
 }

@@ -1,9 +1,9 @@
-import 'package:cinemapedia_app/config/constants/enviroment.dart';
+import 'package:cinemapedia_app/config/constants/environment.dart';
 import 'package:cinemapedia_app/config/utils/data_response.dart';
 import 'package:cinemapedia_app/domain/data/actor_data.dart';
 import 'package:cinemapedia_app/domain/entities/actor.dart';
-import 'package:cinemapedia_app/infraestructure/mappers/actor_mapper.dart';
-import 'package:cinemapedia_app/infraestructure/models/credits_response.dart';
+import 'package:cinemapedia_app/infrastructure/mappers/actor_mapper.dart';
+import 'package:cinemapedia_app/infrastructure/models/credits_response.dart';
 import 'package:dio/dio.dart';
 
 class ActorMovieDbData extends ActorData {

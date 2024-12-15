@@ -16,5 +16,7 @@ export 'favorites/favorite_movies_provider.dart';
 export 'categories/category_provider.dart';
 export 'categories/category_repository_provider.dart';
 
+export 'videos/videos_by_movie_provider.dart';
+
 export 'locale/locale_provider.dart';
 export 'theme/theme_provider.dart';
