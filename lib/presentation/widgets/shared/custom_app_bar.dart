@@ -13,7 +13,6 @@ class CustomAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final colors = Theme.of(context).colorScheme;
     final titleStyle = Theme.of(context).textTheme.titleMedium;
     final isDarkMode = ref.watch(themeProvider).isDarkMode;
     final locale = ref.watch(localeProvider);
@@ -26,9 +25,9 @@ class CustomAppBar extends ConsumerWidget {
             width: double.infinity,
             child: Row(
               children: [
-                Icon(
-                  Icons.movie_outlined,
-                  color: colors.primary,
+                Image.asset(
+                  'assets/icons/main.jpg',
+                  height: 25,
                 ),
                 const SizedBox(
                   width: 5,
