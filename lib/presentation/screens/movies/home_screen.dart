@@ -8,6 +8,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   static const name = 'home-screen';
 
   final Function(bool value) setLoading;
+
   const HomeScreen({super.key, required this.setLoading});
 
   @override
@@ -25,11 +26,29 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   void load() async {
+    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final popularMovies = ref.watch(popularMoviesProvider);
+    final upcomingMovies = ref.watch(upcomingMoviesProvider);
+    final topRatedMovies = ref.watch(topRatedMoviesProvider);
+
     widget.setLoading(true);
-    await ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-    await ref.read(popularMoviesProvider.notifier).loadNextPage();
-    await ref.read(upcomingMoviesProvider.notifier).loadNextPage();
-    await ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+
+    if (nowPlayingMovies.isEmpty) {
+      await ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
+    }
+
+    if (popularMovies.isEmpty) {
+      await ref.read(popularMoviesProvider.notifier).loadNextPage();
+    }
+
+    if (upcomingMovies.isEmpty) {
+      await ref.read(upcomingMoviesProvider.notifier).loadNextPage();
+    }
+
+    if (topRatedMovies.isEmpty) {
+      await ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    }
+
     widget.setLoading(false);
   }
 

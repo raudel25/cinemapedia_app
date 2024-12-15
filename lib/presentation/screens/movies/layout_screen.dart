@@ -24,7 +24,11 @@ class _LayoutScreenState extends State<LayoutScreen> {
           isLoading = value;
         }),
       ),
-      const CategoriesScreen(),
+      CategoriesScreen(
+        setLoading: (value) => setState(() {
+          isLoading = value;
+        }),
+      ),
       FavoritesScreen(
         setLoading: (value) => setState(() {
           isLoading = value;

@@ -1,28 +1,139 @@
+import 'package:cinemapedia_app/domain/entities/category.dart';
+import 'package:cinemapedia_app/domain/entities/movie.dart';
+import 'package:cinemapedia_app/presentation/providers/providers.dart';
+import 'package:cinemapedia_app/presentation/widgets/movies/movie_mazonry.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CategoriesScreen extends StatelessWidget {
+class CategoriesScreen extends ConsumerStatefulWidget {
   static const name = 'categories-screen';
-  const CategoriesScreen({super.key});
+
+  final Function(bool value) setLoading;
+
+  const CategoriesScreen({super.key, required this.setLoading});
+
+  @override
+  ConsumerState<CategoriesScreen> createState() => _CategoriesScreenState();
+}
+
+class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
+  int? selectedCategory;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      load();
+    });
+  }
+
+  void load() async {
+    final categories = ref.watch(categoryProvider);
+
+    widget.setLoading(true);
+
+    if (categories.isEmpty) {
+      await ref.read(categoryProvider.notifier).loadCategories();
+    }
+
+    await setCategory(ref.watch(categoryProvider).first.id);
+
+    widget.setLoading(false);
+  }
+
+  Future setCategory(int id) async {
+    setState(() {
+      selectedCategory = id;
+    });
+    final movies =
+        ref.watch(moviesByCategoryProvider(selectedCategory!)) as List<Movie>;
+
+    if (movies.isNotEmpty) return;
+
+    await ref.read(moviesByCategoryProvider(id).notifier).loadNextPage();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        const SliverAppBar(
-          automaticallyImplyLeading: false,
-          floating: true,
-          flexibleSpace: FlexibleSpaceBar(
-            // title: CustomAppBar(),
-            titlePadding: EdgeInsets.zero,
+    final categories = ref.watch(categoryProvider);
+    final movies = selectedCategory != null
+        ? ref.watch(moviesByCategoryProvider(selectedCategory!)) as List<Movie>
+        : <Movie>[];
+
+    return Column(
+      children: [
+        SizedBox(
+          height: 100,
+          child: _CategoriesSelector(
+            selectedCategory: selectedCategory ?? 0,
+            onChanged: (id) async {
+              widget.setLoading(true);
+              await setCategory(id);
+              widget.setLoading(false);
+            },
+            categories: categories,
           ),
         ),
-        SliverList(
-            delegate: SliverChildBuilderDelegate(
-                childCount: 1,
-                (context, index) => Column(
-                      children: [],
-                    )))
+        Expanded(
+            child: MovieMasonry(
+                movies: movies,
+                loadNextPage: selectedCategory != null
+                    ? ref
+                        .watch(moviesByCategoryProvider(selectedCategory!)
+                            .notifier)
+                        .loadNextPage
+                    : () {}))
       ],
+    );
+  }
+}
+
+class _CategoriesSelector extends StatelessWidget {
+  final List<Category> categories;
+  final int selectedCategory;
+  final Function(int index) onChanged;
+  const _CategoriesSelector(
+      {required this.categories,
+      required this.onChanged,
+      required this.selectedCategory});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
+    return SafeArea(
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: categories.length,
+          itemBuilder: (context, index) => GestureDetector(
+                onTap: () => onChanged(categories[index].id),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Chip(
+                    label: Text(
+                      categories[index].name,
+                      style: TextStyle(
+                        color: categories[index].id == selectedCategory
+                            ? isDarkMode
+                                ? Colors.black
+                                : Colors.white
+                            : null,
+                        fontWeight: categories[index].id == selectedCategory
+                            ? FontWeight.bold
+                            : FontWeight.normal,
+                      ),
+                    ),
+                    backgroundColor: categories[index].id == selectedCategory
+                        ? colorScheme.primary
+                        : null,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              )),
     );
   }
 }

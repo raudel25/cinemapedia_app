@@ -124,4 +124,20 @@ class MovieMovieDbData extends MovieData {
       return DataResponse(success: false);
     }
   }
+
+  @override
+  Future<DataResponse<List<Movie>>> getMoviesByCategory(int categoryId,
+      {int page = 1, String? language}) async {
+    Map<String, dynamic> query = {'page': page, 'with_genres': categoryId};
+
+    if (language != null) query['language'] = language.replaceAll(r'_', '-');
+
+    try {
+      final response = await dio.get('/discover/movie', queryParameters: query);
+
+      return DataResponse(success: true, data: _parseJson(response.data));
+    } catch (_) {
+      return DataResponse(success: false);
+    }
+  }
 }

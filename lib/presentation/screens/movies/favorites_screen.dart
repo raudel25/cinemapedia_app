@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 
 class FavoritesScreen extends ConsumerStatefulWidget {
   static const name = 'favorites-screen';
+  
   final Function(bool value) setLoading;
 
   const FavoritesScreen({super.key, required this.setLoading});
@@ -27,13 +28,13 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
 
   void load() async {
     widget.setLoading(true);
-    await ref.read(movieFavoritesProvider.notifier).loadNextPage();
+    await ref.read(favoriteMoviesProvider.notifier).loadNextPage();
     widget.setLoading(false);
   }
 
   @override
   Widget build(BuildContext context) {
-    final movies = ref.watch(movieFavoritesProvider).values.toList();
+    final movies = ref.watch(favoriteMoviesProvider).values.toList();
 
     if (movies.isEmpty) {
       final colors = Theme.of(context).colorScheme;
@@ -61,6 +62,6 @@ class _FavoritesScreenState extends ConsumerState<FavoritesScreen> {
     return MovieMasonry(
         movies: movies,
         loadNextPage: () =>
-            ref.read(movieFavoritesProvider.notifier).loadNextPage());
+            ref.read(favoriteMoviesProvider.notifier).loadNextPage());
   }
 }

@@ -18,4 +18,7 @@ abstract class MovieRepository {
 
   Future<DataResponse<List<Movie>>> searchMovie(String query,
       {String? language});
+
+  Future<DataResponse<List<Movie>>> getMoviesByCategory(int categoryId,
+      {int page = 1, String? language});
 }

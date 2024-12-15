@@ -7,18 +7,18 @@ final isFavoriteMovieProvider = FutureProvider.family((ref, int movieId) {
   return ref.watch(localRepositoryProvider).isMovieFavorite(movieId);
 });
 
-final movieFavoritesProvider =
-    StateNotifierProvider<MovieFavoritesNotifier, Map<int, Movie>>((ref) {
+final favoriteMoviesProvider =
+    StateNotifierProvider<FavoriteMoviesNotifier, Map<int, Movie>>((ref) {
   final localRepository = ref.watch(localRepositoryProvider);
-  return MovieFavoritesNotifier(localRepository: localRepository);
+  return FavoriteMoviesNotifier(localRepository: localRepository);
 });
 
-class MovieFavoritesNotifier extends StateNotifier<Map<int, Movie>> {
+class FavoriteMoviesNotifier extends StateNotifier<Map<int, Movie>> {
   int currentPage = 0;
   bool isLoading = false;
   final LocalRepository localRepository;
 
-  MovieFavoritesNotifier({required this.localRepository}) : super({});
+  FavoriteMoviesNotifier({required this.localRepository}) : super({});
 
   Future<void> loadNextPage() async {
     if (isLoading) return;

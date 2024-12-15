@@ -3,13 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AppTheme {
   bool isDarkMode;
+  static const colorScheme = Color(0xFF2862f5);
 
   AppTheme({this.isDarkMode = false});
 
   ThemeData get theme => ThemeData(
         useMaterial3: true,
         brightness: isDarkMode ? Brightness.dark : Brightness.light,
-        colorSchemeSeed: const Color(0xFF2862f5),
+        colorSchemeSeed: colorScheme,
       );
 
   AppTheme copyWith({bool isDarkMode = false}) =>

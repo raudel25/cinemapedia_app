@@ -52,6 +52,17 @@ final topRatedMoviesProvider =
   return notifier;
 });
 
+final moviesByCategoryProvider =
+    StateNotifierProvider.family((ref, int categoryId) {
+  final notifier = MoviesNotifier(
+      ref: ref,
+      load: ({int page = 1, String? language}) => ref
+          .watch(movieRepositoryProvider)
+          .getMoviesByCategory(categoryId, page: page, language: language));
+
+  return notifier;
+});
+
 class MoviesNotifier extends StateNotifier<List<Movie>> {
   int currentPage = 0;
   bool isLoading = false;

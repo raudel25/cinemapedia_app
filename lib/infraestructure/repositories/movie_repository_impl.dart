@@ -36,4 +36,9 @@ class MovieRepositoryImpl extends MovieRepository {
   Future<DataResponse<List<Movie>>> searchMovie(String query,
           {String? language}) =>
       data.searchMovie(query, language: language);
+
+  @override
+  Future<DataResponse<List<Movie>>> getMoviesByCategory(int categoryId,
+          {int page = 1, String? language}) =>
+      data.getMoviesByCategory(categoryId, language: language, page: page);
 }
