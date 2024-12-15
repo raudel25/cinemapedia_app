@@ -40,9 +40,12 @@ class _CategoriesScreenState extends ConsumerState<CategoriesScreen> {
     }
 
     categories = ref.read(categoryProvider);
-    await setCategory(widget.categoryName == null
-        ? categories.first.id
-        : categories.firstWhere((e) => e.name == widget.categoryName).id);
+
+    if (categories.isNotEmpty) {
+      await setCategory(widget.categoryName == null
+          ? categories.first.id
+          : categories.firstWhere((e) => e.name == widget.categoryName).id);
+    }
 
     widget.setLoading(false);
   }
